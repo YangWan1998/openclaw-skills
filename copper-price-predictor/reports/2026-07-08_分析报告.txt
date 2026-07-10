@@ -1,0 +1,72 @@
+============================================================
+铜价预测日报
+报告日期: 2026-07-08
+生成时间: 2026-07-08 09:02:01
+============================================================
+
+📊 当前价格
+----------------------------------------
+铜价: 102970.0 元/吨
+涨跌: 10.0 (0.01%)
+最高: 103270.0 | 最低: 102600.0
+成交量: 58519 | 持仓: 148515
+数据来源: 上海期货交易所
+
+🌍 宏观因子
+----------------------------------------
+  美联储政策: 中性
+
+📰 相关新闻
+----------------------------------------
+1. ➡️ Global Copper Market Analysis – January 2026 | Astreka
+   来源: www.astreka.com | 情感: neutral (0.0)
+   Sources: London Metal Exchange, CME/COMEX settlement price data; LME, COMEX, SHF...
+2. ➡️ Copper Price Forecast 2026–2030 - Just2Trade
+   来源: j2t.com | 情感: neutral (0.0)
+   Copper futures are financial contracts for future delivery of copper at a specif...
+3. ➡️ Copper long-term forecast - Fastmarkets
+   来源: www.fastmarkets.com | 情感: neutral (0.0)
+   Keep on top of volatility with battery materials news and intel
+
+Trade on market...
+4. ➡️ LME Copper - Metals
+   来源: www.lme.com | 情感: neutral (0.0)
+   LME Logo
+
+LME Logo LME Logo
+
+Loading
+
+## Featured pages
+
+ General
+
+  ### LME Wee...
+5. 📈 Copper Prices Are Forecast to Decline Somewhat from Record ...
+   来源: www.goldmansachs.com | 情感: positive (0.5)
+   What’s the forecast for copper prices in 2026?
+
+Next year, Goldman Sachs Researc...
+
+🔮 价格预测
+----------------------------------------
+综合评分: 1.55
+整体方向: up
+平均置信度: 50%
+
+因子得分:
+  舆情: 0.31
+  技术: 0
+  宏观: 0.0
+
+各时间窗口预测:
+  5d: 📈 up
+    置信度: 60% | 目标价: 106960.09
+  1w: 📈 up
+    置信度: 50% | 目标价: 107438.9
+  1m: ➡️ stable
+    置信度: 40% | 目标价: 117334.32
+
+============================================================
+⚠️ 免责声明: 本预测仅供参考，不构成投资建议
+============================================================

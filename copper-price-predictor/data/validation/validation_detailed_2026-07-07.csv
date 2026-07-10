@@ -1,0 +1,4 @@
+date,predicted_direction,actual_direction,direction_correct,predicted_price,actual_price,price_error,sentiment_score,technical_score,macro_score,error_analysis,factor_attribution
+2026-07-02,stable,up,False,103433.51,102960.0,1040.0,0.2,-0.93,0.72,"原因：技术因子评分-0.93（看空）主导了预测，但实际铜价上涨，说明技术面信号失效。
+归因：技术因子权重35%过高，且评分与实际走势背离。
+建议：技术权重降至25%，舆情升至50%，宏观保持25%。",舆情因子

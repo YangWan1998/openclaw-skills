@@ -1,0 +1,2 @@
+date,total_predictions,validated_predictions,direction_accuracy_5d,direction_accuracy_1w,direction_accuracy_1m,mae_5d,mae_1w,mae_1m,rmse_5d,rmse_1w,rmse_1m,avg_confidence,confidence_calibration
+2026-07-10,10,3,0.3333,0.0,0.0,4264.76,455.13,,5041.34,455.13,,0.5,-0.3889

@@ -1,0 +1,87 @@
+{
+  "version": "1.1",
+  "last_updated": "2026-07-07",
+  "description": "铜价预测模型配置 - 仅使用舆情和宏观两个因子",
+  "formula": "综合评分 = 舆情评分 × 0.50 + 技术指标 × 0.00 + 宏观因素 × 0.50",
+  "scoring_weights": {
+    "sentiment": {
+      "weight": 0.5,
+      "description": "舆情评分",
+      "note": "新闻情感分析，可根据实际效果调整，范围建议0.4-0.6",
+      "range": [
+        -10,
+        10
+      ],
+      "range_description": "-10(极度悲观) ~ +10(极度乐观)"
+    },
+    "technical": {
+      "weight": 0.0,
+      "description": "技术指标（已停用）",
+      "note": "根据约定，预测仅使用舆情和宏观两个因子",
+      "indicators": []
+    },
+    "macro": {
+      "weight": 0.5,
+      "description": "宏观因素",
+      "note": "美元指数、PMI、库存、美联储政策等，可根据实际效果调整，范围建议0.4-0.6",
+      "factors": [
+        "美元指数",
+        "库存数据",
+        "政策新闻"
+      ]
+    }
+  },
+  "confidence_levels": {
+    "5_days": {
+      "default": 0.6,
+      "description": "5天预测置信度"
+    },
+    "1_week": {
+      "default": 0.5,
+      "description": "1周预测置信度"
+    },
+    "1_month": {
+      "default": 0.4,
+      "description": "1个月预测置信度"
+    }
+  },
+  "adjustment_history": [
+    {
+      "date": "2026-06-21",
+      "change": "初始版本",
+      "reason": "MVP启动",
+      "adjusted_by": "万洋大魔王"
+    },
+    {
+      "date": "2026-07-07",
+      "change": "技术权重 0.35→0.25, 宏观权重 0.25→0.35",
+      "reason": "技术指标（RSI/均线）滞后，在趋势启动时给出错误看空信号，导致连续预测错误。提高宏观权重以更好反映基本面驱动。",
+      "adjusted_by": "万洋大魔王"
+    },
+    {
+      "date": "2026-07-07 09:21:57",
+      "change": "sentiment:0.40->0.40, technical:0.25->0.25, macro:0.35->0.35",
+      "reason": "技术指标（RSI/均线）滞后，在趋势启动时给出错误看空信号，导致连续预测错误。提高宏观权重以更好反映基本面驱动。",
+      "triggered_by": "手动调整 - 基于错误归因分析",
+      "adjusted_by": "万洋大魔王",
+      "auto_adjusted": false
+    },
+    {
+      "date": "2026-07-07 09:27:00",
+      "change": "sentiment:0.40->0.50, technical:0.25->0.0, macro:0.35->0.50",
+      "reason": "根据约定，预测仅使用舆情和宏观两个因子。移除技术因子（当日涨跌幅），因其不是约定的预测因子且导致预测错误。",
+      "triggered_by": "手动调整 - 按约定简化模型",
+      "adjusted_by": "万洋大魔王",
+      "auto_adjusted": false
+    },
+    {
+      "date": "2026-07-07 09:29:08",
+      "change": "sentiment:0.50->0.50, technical:0.00->0.00, macro:0.50->0.50",
+      "reason": "根据约定，预测仅使用舆情和宏观两个因子。移除技术因子（当日涨跌幅），因其不是约定的预测因子且导致预测错误。",
+      "triggered_by": "手动调整 - 按约定简化模型",
+      "adjusted_by": "万洋大魔王",
+      "auto_adjusted": false
+    }
+  ],
+  "notes": "此文件记录预测模型的权重配置，后续调整时请在此记录变更历史"
+}

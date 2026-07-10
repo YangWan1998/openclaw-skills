@@ -1,0 +1,120 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    name: Build Release
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+
+      - name: Install validation tooling
+        run: pip install pyyaml build   # runtime stays zero-dependency; these are release-only tools
+
+      - name: Validate Skill
+        run: |
+          python3 - <<'PYEOF'
+          import re, yaml
+          with open('SKILL.md', 'r') as f:
+              content = f.read()
+          match = re.match(r'^---\n(.*?)\n---', content, re.DOTALL)
+          fm = yaml.safe_load(match.group(1))
+          print(f"Skill: {fm['name']}")
+          PYEOF
+
+      - name: Create skill package
+        run: |
+          mkdir -p dist
+          python3 scripts/build_skill_package.py --out dist/marketplace-skill
+          zip -r dist/mineru-skill.zip \
+            SKILL.md \
+            dist/marketplace-skill/ \
+            skills/mineru/ \
+            .claude-plugin/ \
+            scripts/ \
+            references/ \
+            LICENSE \
+            README.md \
+            README_CN.md \
+            -x '*/__pycache__/*'
+
+      - name: Build Python distribution
+        run: python -m build
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: mineru-skill-release
+          path: dist/
+
+  publish-pypi:
+    name: Publish Python Distribution
+    needs: build
+    runs-on: ubuntu-latest
+    env:
+      PYPI_API_TOKEN: ${{ secrets.PYPI_API_TOKEN }}
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: mineru-skill-release
+          path: dist/
+
+      - name: Publish to PyPI
+        if: ${{ env.PYPI_API_TOKEN != '' }}
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          password: ${{ secrets.PYPI_API_TOKEN }}
+
+  release:
+    name: Create Release
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Download artifact
+        uses: actions/download-artifact@v8
+        with:
+          name: mineru-skill-release
+          path: dist/
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v3
+        with:
+          files: dist/*
+          generate_release_notes: true
+          body: |
+            ## MinerU Skill ${{ github.ref_name }}
+
+            ### Installation
+
+            ```bash
+            git clone https://github.com/Nebutra/MinerU-Skill.git ~/openclaw-skills/mineru/
+            ```
+
+            ### Quick Start
+
+            ```bash
+            # Zero-config (no token needed)
+            python3 scripts/mineru.py ./pdfs/ --output ./output/ --resume
+
+            # Optional: unlock the Standard API for large files / batch / extra formats
+            export MINERU_TOKEN="your-token"   # https://mineru.net/apiManage/token
+            ```
+
+            ---
+
+            [📖 Documentation](https://github.com/Nebutra/MinerU-Skill#readme)

@@ -1,0 +1,28 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+      - name: Install dev dependencies
+        run: pip install pytest build
+      - name: Compile check
+        run: python -m py_compile scripts/*.py scripts/sinks/*.py
+      - name: Unit tests (offline, no network)
+        run: python -m pytest -q
+      - name: Build package
+        run: python -m build
+      - name: Set up uv
+        uses: astral-sh/setup-uv@v5
+      - name: uv zero-install run (PEP 723 inline metadata)
+        run: uv run --script scripts/mineru.py --version

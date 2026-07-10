@@ -1,0 +1,82 @@
+============================================================
+铜价预测日报
+报告日期: 2026-07-09
+生成时间: 2026-07-09 09:36:00
+============================================================
+
+📊 当前价格
+----------------------------------------
+铜价: 102850.0 元/吨
+涨跌: -120.0 (-0.12%)
+最高: 103500.0 | 最低: 102720.0
+成交量: 67529 | 持仓: 149665
+数据来源: 上海期货交易所
+
+🌍 宏观因子
+----------------------------------------
+  美元指数: 101.06
+  美国PMI: 54.0 (扩张)
+  LME库存: 102980 吨
+  COMEX库存: 102910 吨
+  美联储政策: 鸽派/宽松
+
+📰 相关新闻
+----------------------------------------
+1. 📈 Copper Price Forecast 2026–2030 - Just2Trade
+   来源: j2t.com | 情感: positive (0.3)
+   ### Copper Price Forecast End of 2026: Best Estimate
+
+The base case estimate for...
+2. 📉 Copper Prices Outlook | J.P. Morgan Global Research
+   来源: www.jpmorgan.com | 情感: negative (-0.5)
+   Overview
+
+## Key takeaways
+
+Copper prices hit record highs at the start of the y...
+3. 📉 Copper Prices Are Forecast to Decline Somewhat from Record Highs in 2026 | Goldman Sachs
+   来源: www.goldmansachs.com | 情感: negative (-0.3)
+   What’s the forecast for copper prices in 2026?
+
+Next year, Goldman Sachs Researc...
+4. ➡️ Copper Market | Global Market Analysis Report - 2036
+   来源: www.factmr.com | 情感: neutral (0.0)
+   Fact.MR, Market Research Company
+
+Reports
+
+Industry
+
+About
+
+Contact Us
+
+# Copper...
+5. 📉 Copper Prices Are Forecast to Decline Somewhat from Record ...
+   来源: www.goldmansachs.com | 情感: negative (-0.3)
+   What’s the forecast for copper prices in 2026?
+
+Next year, Goldman Sachs Researc...
+
+🔮 价格预测
+----------------------------------------
+综合评分: 1.35
+整体方向: up
+平均置信度: 50%
+
+因子得分:
+  舆情: 0.01
+  技术: 0
+  宏观: 1.3
+
+各时间窗口预测:
+  5d: 📈 up
+    置信度: 60% | 目标价: 106321.19
+  1w: 📈 up
+    置信度: 50% | 目标价: 106737.73
+  1m: ➡️ stable
+    置信度: 40% | 目标价: 115346.27
+
+============================================================
+⚠️ 免责声明: 本预测仅供参考，不构成投资建议
+============================================================

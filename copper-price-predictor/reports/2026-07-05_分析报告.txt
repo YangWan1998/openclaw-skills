@@ -1,0 +1,74 @@
+============================================================
+铜价预测日报
+报告日期: 2026-07-05
+生成时间: 2026-07-05 15:43:28
+============================================================
+
+📊 当前价格
+----------------------------------------
+铜价: 102980.0 元/吨
+涨跌: 1030.0 (1.01%)
+最高: 103240.0 | 最低: 102280.0
+成交量: 80011 | 持仓: 152135
+数据来源: 上海期货交易所
+
+🌍 宏观因子
+----------------------------------------
+  美元指数: 100.86
+  美国PMI: 53.3 (扩张)
+  LME库存: 102890 吨
+  COMEX库存: 102890 吨
+  美联储政策: 鸽派/宽松
+
+📰 相关新闻
+----------------------------------------
+1. 📉 Copper Prices Are Forecast to Decline Somewhat from Record Highs in 2026
+   来源: www.goldmansachs.com | 情感: negative (-0.5)
+   What’s the forecast for copper prices in 2026?
+
+Next year, Goldman Sachs Researc...
+2. ➡️ A recap of copper price trends in the first quarter of 2026
+   来源: www.recyclingproductnews.com | 情感: neutral (0.0)
+   The arbitrage, or disparity between COMEX and LME future contracts, had also rea...
+3. ➡️ COPPER PRICE FORECAST 2026, 2027, 2028 AND 2029 - Long Forecast
+   来源: longforecast.com | 情感: neutral (0.0)
+   The Economy Forecast Agency
+
+# COPPER PRICE FORECAST 2026, 2027, 2028 AND 2029
+
+...
+4. 📉 Copper Prices Outlook | J.P. Morgan Global Research
+   来源: www.jpmorgan.com | 情感: negative (-0.5)
+   Overview
+
+## Key takeaways
+
+Copper prices hit record highs at the start of the y...
+5. 📉 Copper Prices Are Forecast to Decline Somewhat from Record Highs in 2026 | Goldman Sachs
+   来源: www.goldmansachs.com | 情感: negative (-0.5)
+   What’s the forecast for copper prices in 2026?
+
+Next year, Goldman Sachs Researc...
+
+🔮 价格预测
+----------------------------------------
+综合评分: 1.49
+整体方向: up
+平均置信度: 50%
+
+因子得分:
+  舆情: 0.07
+  技术: 0.71
+  宏观: 0.5
+
+各时间窗口预测:
+  5d: 📈 up
+    置信度: 60% | 目标价: 106808.28
+  1w: 📈 up
+    置信度: 50% | 目标价: 107267.68
+  1m: ➡️ stable
+    置信度: 40% | 目标价: 116761.81
+
+============================================================
+⚠️ 免责声明: 本预测仅供参考，不构成投资建议
+============================================================
