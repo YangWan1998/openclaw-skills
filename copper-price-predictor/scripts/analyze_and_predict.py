@@ -7,13 +7,14 @@
 import json
 import sys
 import os
+import argparse
 from datetime import datetime, timedelta
 from pathlib import Path
 
 # 添加当前目录以导入 data_storage
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
-from data_storage import load_csv, save_prediction
+from data_storage import load_csv, save_prediction, load_json, get_data_dir
 
 
 def load_config():
@@ -25,8 +26,8 @@ def load_config():
     return None
 
 
-def load_data():
-    """加载价格数据和新闻数据（从CSV）"""
+def load_data(news_file=None):
+    """加载价格数据和新闻数据"""
     data_dir = Path(__file__).parent.parent / 'data'
     
     price_data = None
@@ -38,10 +39,26 @@ def load_data():
     if price_records:
         price_data = price_records[0]  # 取最新一条
     
-    # 加载新闻数据（CSV）
-    news_records = load_csv('latest_news.csv')
-    if news_records:
-        news_data = {'news': news_records}
+    # 加载新闻数据
+    if news_file:
+        # 从JSON文件加载（包含AI分析结果）
+        print(f"📂 从文件加载新闻数据: {news_file}")
+        news_file_path = Path(news_file)
+        if news_file_path.exists():
+            with open(news_file_path, 'r', encoding='utf-8') as f:
+                news_data = json.load(f)
+            print(f"   ✅ 加载成功: {news_data.get('news_count', 0)} 条新闻")
+            print(f"   📊 加权情感得分: {news_data.get('weighted_sentiment_score', 0):.2f}")
+        else:
+            print(f"   ⚠️ 文件不存在: {news_file}")
+            news_data = None
+    else:
+        # 从CSV加载（备用）
+        print("📂 从CSV加载新闻数据...")
+        news_records = load_csv('latest_news.csv')
+        if news_records:
+            news_data = {'news': news_records}
+            print(f"   ✅ 加载成功: {len(news_records)} 条新闻")
     
     # 加载宏观数据（CSV）
     macro_records = load_csv('macro_data.csv')
@@ -215,7 +232,14 @@ def save_prediction_result(prediction):
 
 
 if __name__ == '__main__':
-    price_data, news_data, macro_data = load_data()
+    # 解析命令行参数
+    parser = argparse.ArgumentParser(description='分析数据并生成铜价预测')
+    parser.add_argument('--news-file', type=str,
+                       help='从JSON文件加载已分析的新闻数据（跳过搜索和AI分析）')
+    args = parser.parse_args()
+    
+    # 加载数据
+    price_data, news_data, macro_data = load_data(args.news_file)
     
     if not price_data:
         print("错误: 没有找到价格数据，请先运行 fetch_copper_price_v2.py")

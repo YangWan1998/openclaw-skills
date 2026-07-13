@@ -15,13 +15,15 @@ def is_weekend():
     return datetime.now().weekday() >= 5
 
 
-def run_script(script_name):
+def run_script(script_name, extra_args=None):
     """运行子脚本"""
     script_dir = Path(__file__).parent
     script_path = script_dir / script_name
     
     print(f"\n{'='*60}")
     print(f"🚀 运行: {script_name}")
+    if extra_args:
+        print(f"   参数: {' '.join(extra_args)}")
     print('='*60)
     
     # 检测是否需要使用conda py311环境
@@ -30,8 +32,13 @@ def run_script(script_name):
     else:
         python_cmd = [sys.executable]
     
+    # 构建命令
+    cmd = python_cmd + [str(script_path)]
+    if extra_args:
+        cmd.extend(extra_args)
+    
     result = subprocess.run(
-        python_cmd + [str(script_path)],
+        cmd,
         capture_output=False,
         text=True
     )
@@ -51,19 +58,65 @@ def main():
         print(f"{'='*60}")
         return True
     
-    # 完整的运行流程
-    scripts = [
-        ('fetch_copper_price_v2.py', '获取铜价数据'),
-        ('fetch_macro_data.py', '获取宏观数据'),
-        ('search_copper_news.py', '搜索铜相关新闻'),
-        ('analyze_and_predict.py', '分析并生成预测'),
-        ('generate_report.py', '生成预测报告')
-    ]
+    # 检查是否有预存的新闻分析文件
+    data_dir = Path(__file__).parent.parent / 'data'
+    news_analysis_file = data_dir / 'news_analysis.json'
+    has_prebuilt_news = news_analysis_file.exists()
+    
+    if has_prebuilt_news:
+        # 检查文件是否是今天的
+        try:
+            import json
+            with open(news_analysis_file, 'r') as f:
+                news_data = json.load(f)
+            file_date = news_data.get('timestamp', '')[:10]  # 取前10位日期
+            today_str = __import__('datetime').datetime.now().strftime('%Y-%m-%d')
+            
+            if file_date == today_str:
+                print(f"✅ 发现今天的新闻分析文件: {news_analysis_file}")
+                print(f"   包含 {news_data.get('news_count', 0)} 条新闻，跳过新闻搜索")
+                use_prebuilt_news = True
+            else:
+                print(f"⚠️ 新闻分析文件日期不匹配: {file_date} != {today_str}")
+                print("   将重新搜索新闻")
+                use_prebuilt_news = False
+        except Exception as e:
+            print(f"⚠️ 读取新闻分析文件失败: {e}")
+            use_prebuilt_news = False
+    else:
+        print("ℹ️  没有找到预存的新闻分析文件，将执行完整流程")
+        use_prebuilt_news = False
+    
+    # 构建运行流程
+    if use_prebuilt_news:
+        # 使用预存的新闻，跳过搜索
+        scripts = [
+            ('fetch_copper_price_v2.py', '获取铜价数据'),
+            ('fetch_macro_data.py', '获取宏观数据'),
+            # 跳过 search_copper_news.py
+            ('analyze_and_predict.py', '分析并生成预测', ['--news-file', str(news_analysis_file)]),
+            ('generate_report.py', '生成预测报告')
+        ]
+    else:
+        # 完整流程
+        scripts = [
+            ('fetch_copper_price_v2.py', '获取铜价数据', None),
+            ('fetch_macro_data.py', '获取宏观数据', None),
+            ('search_copper_news.py', '搜索铜相关新闻', None),
+            ('analyze_and_predict.py', '分析并生成预测', None),
+            ('generate_report.py', '生成预测报告', None)
+        ]
     
     success_count = 0
-    for script, desc in scripts:
+    for item in scripts:
+        if len(item) == 3:
+            script, desc, extra_args = item
+        else:
+            script, desc = item
+            extra_args = None
+        
         print(f"\n📋 步骤: {desc}")
-        if run_script(script):
+        if run_script(script, extra_args):
             success_count += 1
             print(f"✅ {desc} 完成")
         else:

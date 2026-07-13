@@ -7,6 +7,7 @@
 import json
 import sys
 import os
+import argparse
 from datetime import datetime
 from pathlib import Path
 
@@ -15,7 +16,7 @@ sys.path.insert(0, os.path.expanduser("~/.openclaw/workspace/skills/moochmaniac-
 # 添加当前目录以导入 analyze_sentiment_ai
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
-from data_storage import save_news_data
+from data_storage import save_news_data, save_json, get_data_dir
 
 # 导入 AI 情感分析
 try:
@@ -349,38 +350,109 @@ def save_news(news_data):
         print("💡 整体情绪: 中性")
 
 
+def save_news_analysis(news_data, output_path=None):
+    """保存新闻+AI分析结果到JSON文件，供后续预测使用"""
+    if output_path is None:
+        data_dir = get_data_dir()
+        output_path = data_dir / 'news_analysis.json'
+    else:
+        output_path = Path(output_path)
+    
+    # 计算加权平均情感得分
+    weighted_score = 0
+    total_weight = 0
+    analyzed_count = 0
+    
+    # 清理新闻数据中的 datetime 对象
+    clean_news = []
+    for news in news_data.get('news', []):
+        # 复制并转换 datetime 对象为字符串
+        clean_item = {}
+        for key, value in news.items():
+            if isinstance(value, datetime):
+                clean_item[key] = value.isoformat()
+            else:
+                clean_item[key] = value
+        clean_news.append(clean_item)
+        
+        sentiment = clean_item.get('sentiment', '')
+        if sentiment not in ['old_news', 'pending']:
+            analyzed_count += 1
+            weight = clean_item.get('time_weight', 1.0)
+            weighted_score += clean_item.get('sentiment_score', 0) * weight
+            total_weight += weight
+    
+    avg_score = weighted_score / total_weight if total_weight > 0 else 0
+    
+    # 构建完整的数据结构
+    data = {
+        'timestamp': datetime.now().isoformat(),
+        'news_count': news_data.get('news_count', 0),
+        'recent_news_count': news_data.get('recent_news_count', 0),
+        'weighted_sentiment_score': round(avg_score, 2),
+        'analyzed_count': analyzed_count,
+        'total_weight': round(total_weight, 2),
+        'news': clean_news
+    }
+    
+    with open(output_path, 'w', encoding='utf-8') as f:
+        json.dump(data, f, ensure_ascii=False, indent=2)
+    
+    print(f"\n💾 新闻+AI分析结果已保存到: {output_path}")
+    print(f"   共 {data['news_count']} 条新闻，{analyzed_count} 条已分析")
+    print(f"   加权平均情感得分: {avg_score:.2f}")
+    
+    return output_path
+
+
 if __name__ == '__main__':
+    # 解析命令行参数
+    parser = argparse.ArgumentParser(description='搜索铜相关新闻并进行AI情感分析')
+    parser.add_argument('--save-only', action='store_true',
+                       help='只保存新闻+AI分析到文件，不打印详细列表')
+    parser.add_argument('--output', type=str,
+                       help='指定输出文件路径（默认: data/news_analysis.json）')
+    args = parser.parse_args()
+    
     print(f"\n{'='*60}")
     print(f"🚀 开始搜索铜相关新闻... {datetime.now().strftime('%Y-%m-%d %H:%M')}")
     print(f"{'='*60}")
     
     news_data = search_copper_news()
+    
+    # 保存到CSV（历史记录）
     save_news(news_data)
     
-    print(f"\n{'='*60}")
-    print("📰 新闻列表（前10条）")
-    print(f"{'='*60}")
+    # 保存到JSON（供预测使用）
+    output_path = args.output if args.output else None
+    json_path = save_news_analysis(news_data, output_path)
     
-    for i, news in enumerate(news_data['news'][:10], 1):
-        if AI_ANALYSIS_AVAILABLE:
-            emoji = score_to_emoji(news.get('sentiment_score', 0))
-        else:
-            emoji = {'positive': '📈', 'negative': '📉', 'neutral': '➡️', 'old_news': '📰', 'pending': '⏳'}.get(news['sentiment'], '➡️')
+    if not args.save_only:
+        # 打印详细列表（原来的行为）
+        print(f"\n{'='*60}")
+        print("📰 新闻列表（前10条）")
+        print(f"{'='*60}")
         
-        # 显示日期和权重信息
-        days_old = news.get('days_old', 0)
-        weight = news.get('time_weight', 1.0)
-        if news.get('sentiment') == 'old_news':
-            date_info = f"📅 {news['date']} (旧闻)"
-        elif news.get('sentiment') == 'pending':
-            date_info = f"📅 {news['date']} (未分析)"
-        else:
-            date_info = f"📅 {news['date']} ({days_old}天前, 权重{weight:.1f}x)"
-        
-        print(f"\n{i}. {emoji} {news['title']}")
-        print(f"   📍 来源: {news['source']} | {date_info}")
-        print(f"   📊 情感: {news['sentiment']} ({news.get('sentiment_score', 0):.2f})")
-        print(f"   📝 摘要: {news['summary'][:100]}...")
+        for i, news in enumerate(news_data['news'][:10], 1):
+            if AI_ANALYSIS_AVAILABLE:
+                emoji = score_to_emoji(news.get('sentiment_score', 0))
+            else:
+                emoji = {'positive': '📈', 'negative': '📉', 'neutral': '➡️', 'old_news': '📰', 'pending': '⏳'}.get(news['sentiment'], '➡️')
+            
+            # 显示日期和权重信息
+            days_old = news.get('days_old', 0)
+            weight = news.get('time_weight', 1.0)
+            if news.get('sentiment') == 'old_news':
+                date_info = f"📅 {news['date']} (旧闻)"
+            elif news.get('sentiment') == 'pending':
+                date_info = f"📅 {news['date']} (未分析)"
+            else:
+                date_info = f"📅 {news['date']} ({days_old}天前, 权重{weight:.1f}x)"
+            
+            print(f"\n{i}. {emoji} {news['title']}")
+            print(f"   📍 来源: {news['source']} | {date_info}")
+            print(f"   📊 情感: {news['sentiment']} ({news.get('sentiment_score', 0):.2f})")
+            print(f"   📝 摘要: {news['summary'][:100]}...")
     
     print(f"\n{'='*60}")
     print("✅ 新闻搜索和情感分析完成")

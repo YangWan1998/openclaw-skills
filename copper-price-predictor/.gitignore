@@ -1,0 +1,17 @@
+# Data files (generated during runtime)
+data/
+
+# Reports (generated during runtime)
+reports/
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+
+# Environment
+.env
+
+# IDE
+.vscode/
+.idea/
