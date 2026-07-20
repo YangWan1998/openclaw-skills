@@ -264,7 +264,7 @@ def search_copper_news():
         if AI_ANALYSIS_AVAILABLE:
             from analyze_sentiment_ai import batch_analyze_sentiment
             # 使用批量分析：一次AI调用分析多条新闻
-            analyzed_results = batch_analyze_sentiment(news_to_analyze, max_batch_size=15)
+            analyzed_results = batch_analyze_sentiment(news_to_analyze, max_batch_size=8)
             
             # 显示分析结果
             analyzed_count = 0

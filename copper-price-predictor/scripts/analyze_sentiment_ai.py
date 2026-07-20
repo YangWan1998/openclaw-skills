@@ -172,14 +172,14 @@ def extract_score(text):
     return None
 
 
-def batch_analyze_sentiment_ai(news_list, max_batch_size=15):
+def batch_analyze_sentiment_ai(news_list, max_batch_size=8):
     """
     真正的批量AI分析 - 一次把多条新闻打包给AI，减少进程启动开销
     
     原理：启动1次AI进程分析多条新闻，而不是每条新闻启动1次
     
     news_list: [{title, content}, ...] (已按日期排序，最新的在前)
-    max_batch_size: 最大分析数量（默认15条）
+    max_batch_size: 最大分析数量（默认8条，控制prompt长度避免LLM截断）
     返回: [{title, content, sentiment_score, sentiment}, ...]
     """
     results = []
@@ -206,7 +206,7 @@ def batch_analyze_sentiment_ai(news_list, max_batch_size=15):
         text = text.replace('{', '[').replace('}', ']')
         # 压缩多余空格
         text = ' '.join(text.split())
-        return text[:400]  # 限制长度
+        return text[:250]  # 限制长度，控制总prompt大小
     
     news_text = ""
     for i, news in enumerate(analyze_list, 1):
@@ -253,10 +253,10 @@ Return ONLY JSON array: [{{"index": 1, "score": <int>, "reason": "<brief>"}}, ..
     try:
         print(f"     🤖 启动AI批量分析（{len(analyze_list)}条）...")
         result = subprocess.run(
-            ['openclaw', 'agent', '--agent', 'main', '--message', prompt, '--json', '--local', '--timeout', '60'],
+            ['openclaw', 'agent', '--agent', 'main', '--message', prompt, '--json', '--local', '--timeout', '120'],
             capture_output=True,
             text=True,
-            timeout=90
+            timeout=150
         )
         
         if result.returncode == 0:
@@ -279,15 +279,29 @@ Return ONLY JSON array: [{{"index": 1, "score": <int>, "reason": "<brief>"}}, ..
                         json_str = array_match.group()
                         # 预处理：修复常见JSON错误
                         json_str = json_str.replace("'", '"')  # 单引号转双引号
-                        analysis_results = json.loads(json_str)
-                        for item in analysis_results:
-                            idx = item.get('index', 0)
-                            score = item.get('score', 0)
+                        # 修复reason字段中的未转义双引号（如 "reason": "..."xxx"..."）
+                        # 使用更安全的修复：先提取所有 {"index":N,"score":M,"reason":"..."} 对象
+                        object_pattern = r'\{\s*"index"\s*:\s*(\d+)\s*,\s*"score"\s*:\s*([-+]?\d+)\s*\}'
+                        simple_matches = re.findall(object_pattern, json_str)
+                        for idx_str, score_str in simple_matches:
+                            idx = int(idx_str)
+                            score = int(score_str)
                             if 1 <= idx <= len(analyze_list) and -10 <= score <= 10:
                                 scores_map[idx] = score / 10.0
                         if len(scores_map) > 0:
                             parsed = True
                             print(f"     ✅ 方法1成功: AI返回了 {len(scores_map)}/{len(analyze_list)} 条结果")
+                        else:
+                            # 尝试完整解析（如果简单提取失败）
+                            analysis_results = json.loads(json_str)
+                            for item in analysis_results:
+                                idx = item.get('index', 0)
+                                score = item.get('score', 0)
+                                if 1 <= idx <= len(analyze_list) and -10 <= score <= 10:
+                                    scores_map[idx] = score / 10.0
+                            if len(scores_map) > 0:
+                                parsed = True
+                                print(f"     ✅ 方法1成功: AI返回了 {len(scores_map)}/{len(analyze_list)} 条结果")
                 except (json.JSONDecodeError, ValueError) as e:
                     print(f"     ⚠️  方法1(JSON数组)失败: {e}")
                 

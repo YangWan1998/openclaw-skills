@@ -1,2 +1,2 @@
 date,timestamp,current_price,sentiment_score,technical_score,macro_score,composite_score,overall_direction,confidence,5d_direction,5d_confidence,5d_target_price,1w_direction,1w_confidence,1w_target_price,1m_direction,1m_confidence,1m_target_price
-2026-07-10,2026-07-10T10:47:31.177410,103160.0,0.09,0,1.0,1.45,up,0.5,up,0.6,106899.55,up,0.5,107348.3,stable,0.4,116622.38
+2026-07-20,2026-07-20T14:02:37.359523,103370.0,0.3,0,0.4,1.9,up,0.5,up,0.6,108280.08,up,0.5,108869.28,up,0.4,121046.27
