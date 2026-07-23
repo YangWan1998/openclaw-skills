@@ -1,0 +1,9 @@
+date,predicted_direction,actual_direction,direction_correct,predicted_price,actual_price,price_error,sentiment_score,technical_score,macro_score,error_analysis,factor_attribution
+2026-07-03,up,down,False,108957.99,102850.0,130.0,0.16,0.71,0.98,"原因：综合评分仅2.32（弱偏多），实际微跌130元，属方向误判但幅度极小，模型对弱信号过度敏感。
+
+归因：舆情权重0.4过高，情绪评分0.16几乎中性却占最大权重；技术评分0.71偏强但实际走低，技术因子失效。
+
+建议：降低舆情至0.25，技术升至0.45，宏观保持0.30；或增设""信号强度阈值""（如|评分|>3才触发方向预测）。",舆情因子
+2026-07-04,up,up,True,109382.78,103160.0,180.0,0.37,0.71,0.3,预测正确,无
+2026-07-05,up,up,True,106808.28,103710.0,730.0,0.07,0.71,0.5,预测正确,无
+2026-07-08,up,up,True,106960.09,103060.0,90.0,0.31,0.0,0.0,预测正确,无

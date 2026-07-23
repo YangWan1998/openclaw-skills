@@ -1,6 +1,6 @@
 date,indicator,value,status,policy_stance,impact_on_copper,source,timestamp
-2026-07-20,USD_INDEX,100.87,,,,https://cn.investing.com/indices/usdollar,2026-07-20T14:01:25.458432
-2026-07-20,US_ISM_PMI,54.0,expansion,,,https://cn.investing.com/economic-calendar/ismpmi-173,2026-07-20T14:01:27.675057
-2026-07-20,INVENTORY_LME,103940,,,,https://hq.smm.cn/h5/LME-electrolytic-copper-inventory,2026-07-20T14:01:30.398445
-2026-07-20,INVENTORY_COMEX,103940,,,,https://hq.smm.cn/h5/COMEX-electrolytic-copper-inventory,2026-07-20T14:01:30.398445
-2026-07-20,FED_POLICY,,,dovish,positive,https://cn.investing.com/economic-calendar/fed-interest-rate-decision-168,2026-07-20T14:01:31.735436
+2026-07-22,USD_INDEX,100.87,,,,https://cn.investing.com/indices/usdollar,2026-07-22T10:02:05.821773
+2026-07-22,US_ISM_PMI,53.3,expansion,,,https://sc.macromicro.me/series/265/ism-pmi,2026-07-22T10:02:12.604986
+2026-07-22,INVENTORY_LME,105110,,,,https://hq.smm.cn/h5/LME-electrolytic-copper-inventory,2026-07-22T10:02:23.310712
+2026-07-22,INVENTORY_COMEX,105110,,,,https://hq.smm.cn/h5/COMEX-electrolytic-copper-inventory,2026-07-22T10:02:23.310712
+2026-07-22,FED_POLICY,,,dovish,positive,https://cn.investing.com/economic-calendar/fed-interest-rate-decision-168,2026-07-22T10:02:30.357836

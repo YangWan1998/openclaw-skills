@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-07-20T14:02:36.124849",
+  "timestamp": "2026-07-22T10:03:09.742139",
   "factors": [
     {
       "indicator": "USD_INDEX",
@@ -10,36 +10,36 @@
     },
     {
       "indicator": "US_ISM_PMI",
-      "value": 54.0,
-      "score": 5,
+      "value": 53.3,
+      "score": 3,
       "impact": "positive",
-      "reasoning": "ISM制造业PMI 54.0处于扩张区间，制造业活动活跃利好铜需求，对铜价形成支撑。"
+      "reasoning": "AI分析失败，使用规则评分"
     },
     {
       "indicator": "FED_POLICY",
       "value": "",
       "score": 5,
       "impact": "positive",
-      "reasoning": "美联储鸽派立场意味着宽松货币政策，美元承压走弱，流动性充裕利好铜价。"
+      "reasoning": "AI分析失败，使用规则评分"
     },
     {
       "indicator": "INVENTORY_LME",
-      "value": 103940,
+      "value": 105110,
       "score": 0,
       "impact": "neutral",
       "reasoning": "LME库存水平分析"
     },
     {
       "indicator": "INVENTORY_COMEX",
-      "value": 103940,
+      "value": 105110,
       "score": -5,
       "impact": "negative",
       "reasoning": "COMEX库存水平分析"
     }
   ],
   "composite": {
-    "composite_score": 0.8,
-    "weighted_score": 0.8,
+    "composite_score": 0.3,
+    "weighted_score": 0.3,
     "factor_breakdown": [
       {
         "indicator": "USD_INDEX",
@@ -49,9 +49,9 @@
       },
       {
         "indicator": "US_ISM_PMI",
-        "score": 5,
+        "score": 3,
         "weight": 0.25,
-        "weighted_contribution": 1.25
+        "weighted_contribution": 0.75
       },
       {
         "indicator": "FED_POLICY",
